@@ -22,6 +22,7 @@ import org.jetbrains.kotlinx.dl.api.core.layer.normalization.BatchNorm
 import org.jetbrains.kotlinx.dl.api.core.layer.pooling.*
 import org.jetbrains.kotlinx.dl.api.core.layer.reshaping.Flatten
 import org.jetbrains.kotlinx.dl.api.core.layer.reshaping.RepeatVector
+import org.jetbrains.kotlinx.dl.api.core.layer.reshaping.ZeroPadding1D
 import org.jetbrains.kotlinx.dl.api.core.layer.reshaping.ZeroPadding2D
 import org.jetbrains.kotlinx.dl.api.core.regularizer.L2L1
 import org.jetbrains.kotlinx.dl.api.core.regularizer.Regularizer
@@ -101,6 +102,7 @@ private fun convertToKerasLayer(layer: Layer, isKerasFullyCompatible: Boolean, i
         // Reshaping layers
         is Flatten -> createKerasFlattenLayer(layer)
         is RepeatVector -> createKerasRepeatVectorLayer(layer)
+        is ZeroPadding1D -> createKerasZeroPadding1DLayer(layer)
         is ZeroPadding2D -> createKerasZeroPadding2DLayer(layer)
         // Merging layers
         is Add -> createKerasAddLayer(layer)
@@ -712,6 +714,16 @@ private fun createKerasSeparableConv2DLayer(layer: SeparableConv2D, isKerasFully
         name = layer.name
     )
     return KerasLayer(class_name = LAYER_SEPARABLE_CONV2D, config = configX)
+}
+
+private fun createKerasZeroPadding1DLayer(layer: ZeroPadding1D): KerasLayer {
+    val configX = LayerConfig(
+        dtype = DATATYPE_FLOAT32,
+        name = layer.name,
+        padding = KerasPadding.ZeroPadding1D(layer.padding),
+        trainable = layer.isTrainable
+    )
+    return KerasLayer(class_name = LAYER_ZERO_PADDING_1D, config = configX)
 }
 
 private fun createKerasZeroPadding2DLayer(layer: ZeroPadding2D): KerasLayer {

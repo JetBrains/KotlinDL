@@ -17,6 +17,16 @@ internal sealed class KerasPadding {
 
     object Full : KerasPadding()
 
+    class ZeroPadding1D : KerasPadding {
+        val padding:IntArray
+
+        constructor(padding: IntArray){
+            this.padding = IntArray(2)
+            this.padding[0] = padding[0]
+            this.padding[1] = padding[1]
+        }
+    }
+
     class ZeroPadding2D : KerasPadding {
         val padding: IntArray
 
