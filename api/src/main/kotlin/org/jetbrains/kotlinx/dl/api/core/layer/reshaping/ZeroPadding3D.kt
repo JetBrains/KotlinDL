@@ -11,11 +11,10 @@ import org.tensorflow.op.Ops
  *
  * This layer can add zeros in the rows, cols and depth of an video tensor.
  *
- * @property [padding] 6 numbers  interpreted as `(left_dim1_pad, right_dim1_pad, left_dim2_pad, right_dim2_pad, left_dim3_pad, right_dim3_pad`.
+ * @property [padding] 6 numbers  interpreted as `(left_dim1_pad, right_dim1_pad, left_dim2_pad, right_dim2_pad, left_dim3_pad, right_dim3_pad)`.
  *
  * @see [Tensorflow implementation](https://github.com/tensorflow/tensorflow/blob/582c8d236cb079023657287c318ff26adb239002/tensorflow/python/keras/layers/convolutional.py#L2890)
  */
-
 public class ZeroPadding3D : Layer {
     //TODO add dataFormat support
     public val padding: IntArray

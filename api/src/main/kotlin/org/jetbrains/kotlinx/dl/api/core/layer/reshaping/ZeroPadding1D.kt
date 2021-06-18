@@ -6,10 +6,24 @@ import org.tensorflow.Operand
 import org.tensorflow.Shape
 import org.tensorflow.op.Ops
 
+/**
+ * Zero-padding layer for 1D input (e.g. audio).
+ *
+ * This layer can add zeros in the rows of the audio tensor
+ *
+ * @property [padding] 2 numbers  interpreted as `(left_pad, right_pad)`.
+ *
+ * @see [Tensorflow implementation](https://github.com/tensorflow/tensorflow/blob/582c8d236cb079023657287c318ff26adb239002/tensorflow/python/keras/layers/convolutional.py#L2699)
+ */
 public class ZeroPadding1D : Layer {
     public val padding: IntArray
     private lateinit var inputShape: Shape
 
+    /**
+     * Constructs an instance of ZeroPadding1D layer
+     * @param [padding] symmetric padding applied to width(same on all sides)
+     * @param [name] layer name
+     */
     public constructor(
         padding: Int,
         name: String = ""
@@ -18,6 +32,12 @@ public class ZeroPadding1D : Layer {
         name
     )
 
+    /**
+     * Constructs an instance of ZeroPadding1D layer
+     * @param [padding] triple of padding values - [padding.first] represents padding on left side
+     * and [padding.second] is padding on right side
+     * @param [name] layer name
+     */
     public constructor(
         padding: Pair<Int, Int>,
         name: String = ""
@@ -26,6 +46,14 @@ public class ZeroPadding1D : Layer {
         name
     )
 
+    /**
+     * Constructs an instance of ZeroPadding1D layer
+     * @param [padding] list of padding values. Size of list must be equal to 2. Those list values maps to
+     * the following paddings:
+     * padding[0] -> left padding,
+     * padding[1] -> right padding,
+     * @param [name] layer name
+     */
     public constructor(padding: IntArray, name: String = "") : super(name) {
         require(padding.size == 2)
         this.padding = padding
