@@ -6,10 +6,26 @@ import org.tensorflow.Operand
 import org.tensorflow.Shape
 import org.tensorflow.op.Ops
 
+/**
+ * Zero-padding layer for 3D input (e.g. video).
+ *
+ * This layer can add zeros in the rows, cols and depth of an video tensor.
+ *
+ * @property [padding] 6 numbers  interpreted as `(left_dim1_pad, right_dim1_pad, left_dim2_pad, right_dim2_pad, left_dim3_pad, right_dim3_pad`.
+ *
+ * @see [Tensorflow implementation](https://github.com/tensorflow/tensorflow/blob/582c8d236cb079023657287c318ff26adb239002/tensorflow/python/keras/layers/convolutional.py#L2890)
+ */
+
 public class ZeroPadding3D : Layer {
+    //TODO add dataFormat support
     public val padding: IntArray
     private lateinit var inputShape: Shape
 
+    /**
+     * Constructs an instance of ZeroPadding3D layer
+     * @param [padding] symmetric padding applied to width, height and depth (same on all sides)
+     * @param [name] layer name
+     */
     public constructor(
         padding: Int,
         name: String = ""
@@ -18,6 +34,12 @@ public class ZeroPadding3D : Layer {
         name
     )
 
+    /**
+     * Constructs an instance of ZeroPadding3D layer
+     * @param [padding] triple of padding values - [padding.first] represents vertical padding (applied to top and
+     * bottom of image, and [padding.second] is horizontal padding (left and right sides), [padding.third] is depth padding
+     * @param [name] layer name
+     */
     public constructor(
         padding: Triple<Int, Int, Int>,
         name: String = ""
@@ -26,6 +48,12 @@ public class ZeroPadding3D : Layer {
         name
     )
 
+    /**
+     * Constructs an instance of ZeroPadding3D layer
+     * @param [padding] list of pair of padding values [padding[0]] represents the first pair(applied to vertical),
+     * [padding[1]] is horizontal padding, [padding[2]] is the depth padding.
+     * @param [name] layer name
+     */
     public constructor(
         padding: Array<Pair<Int, Int>>,
         name: String = ""
@@ -38,6 +66,18 @@ public class ZeroPadding3D : Layer {
         name
     )
 
+    /**
+     * Constructs an instance of ZeroPadding3D layer
+     * @param [padding] list of padding values. Size of list must be equal to 6. Those list values maps to
+     * the following paddings:
+     * padding[0] -> top padding,
+     * padding[1] -> bottom padding,
+     * padding[2] -> left padding,
+     * padding[3] -> right padding
+     * padding[4] -> front padding
+     * padding[5] -> back padding
+     * @param [name] layer name
+     */
     public constructor(padding: IntArray, name: String = "") : super(name) {
         require(padding.size == 6)
         this.padding = padding
