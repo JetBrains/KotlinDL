@@ -149,5 +149,7 @@ internal data class LayerConfig(
     @Json(serializeNull = false)
     val unroll: Boolean? = null,
     @Json(serializeNull = false)
-    val use_bias: Boolean? = null
+    val use_bias: Boolean? = null,
+    @Json(serializeNull = false)
+    val dims: IntArray? = null
 )

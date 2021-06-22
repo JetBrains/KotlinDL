@@ -17,6 +17,7 @@ import org.jetbrains.kotlinx.dl.api.core.layer.convolutional.*
 import org.jetbrains.kotlinx.dl.api.core.layer.core.ActivationLayer
 import org.jetbrains.kotlinx.dl.api.core.layer.core.Dense
 import org.jetbrains.kotlinx.dl.api.core.layer.core.Input
+import org.jetbrains.kotlinx.dl.api.core.layer.core.Permute
 import org.jetbrains.kotlinx.dl.api.core.layer.merge.*
 import org.jetbrains.kotlinx.dl.api.core.layer.normalization.BatchNorm
 import org.jetbrains.kotlinx.dl.api.core.layer.pooling.*
@@ -74,6 +75,7 @@ private fun convertToKerasLayer(layer: Layer, isKerasFullyCompatible: Boolean, i
         is Input -> createKerasInputLayer(layer)
         is Dense -> createKerasDenseLayer(layer, isKerasFullyCompatible)
         is ActivationLayer -> createKerasActivationLayer(layer)
+        is Permute -> createKerasPermuteLayer(layer)
         // Convolution layers
         is Conv1D -> createKerasConv1DLayer(layer, isKerasFullyCompatible)
         is Conv2D -> createKerasConv2DLayer(layer, isKerasFullyCompatible)
@@ -504,6 +506,14 @@ private fun createKerasDenseLayer(layer: Dense, isKerasFullyCompatible: Boolean)
         activity_regularizer = convertToKerasRegularizer(layer.activityRegularizer),
     )
     return KerasLayer(class_name = LAYER_DENSE, config = configX)
+}
+
+private fun createKerasPermuteLayer(layer: Permute):KerasLayer{
+    val configX = LayerConfig(
+        dims = layer.dims,
+        name = layer.name
+    )
+    return KerasLayer(class_name = LAYER_PERMUTE, config = configX)
 }
 
 private fun createKerasMaxPool1DLayer(layer: MaxPool1D): KerasLayer {
