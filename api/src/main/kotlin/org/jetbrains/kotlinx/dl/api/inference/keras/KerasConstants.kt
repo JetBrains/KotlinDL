@@ -10,7 +10,6 @@ package org.jetbrains.kotlinx.dl.api.inference.keras
 internal const val LAYER_DENSE: String = "Dense"
 internal const val LAYER_INPUT: String = "InputLayer"
 internal const val LAYER_ACTIVATION: String = "Activation"
-internal const val LAYER_PERMUTE: String = "Permute"
 // Convolution layers
 internal const val LAYER_CONV1D: String = "Conv1D"
 internal const val LAYER_CONV2D: String = "Conv2D"
@@ -44,6 +43,7 @@ internal const val LAYER_REPEAT_VECTOR: String = "RepeatVector"
 internal const val LAYER_RESHAPE: String = "Reshape"
 internal const val LAYER_ZERO_PADDING_2D = "ZeroPadding2D"
 internal const val LAYER_CROPPING_2D = "Cropping2D"
+internal const val LAYER_PERMUTE: String = "Permute"
 // Merging layers
 internal const val LAYER_ADD: String = "Add"
 internal const val LAYER_MULTIPLY: String = "Multiply"

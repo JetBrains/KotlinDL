@@ -16,7 +16,7 @@ import org.jetbrains.kotlinx.dl.api.core.layer.convolutional.*
 import org.jetbrains.kotlinx.dl.api.core.layer.core.ActivationLayer
 import org.jetbrains.kotlinx.dl.api.core.layer.core.Dense
 import org.jetbrains.kotlinx.dl.api.core.layer.core.Input
-import org.jetbrains.kotlinx.dl.api.core.layer.core.Permute
+import org.jetbrains.kotlinx.dl.api.core.layer.reshaping.Permute
 import org.jetbrains.kotlinx.dl.api.core.layer.merge.*
 import org.jetbrains.kotlinx.dl.api.core.layer.normalization.BatchNorm
 import org.jetbrains.kotlinx.dl.api.core.layer.pooling.*
@@ -118,7 +118,6 @@ private fun convertToLayer(
         // Core layers
         LAYER_ACTIVATION -> createActivationLayer(kerasLayer.config!!, kerasLayer.config.name!!)
         LAYER_DENSE -> createDenseLayer(kerasLayer.config!!, kerasLayer.config.name!!)
-        LAYER_PERMUTE -> createPermuteLayer(kerasLayer.config!!, kerasLayer.config.name!!)
         // Convolution layers
         LAYER_CONV1D -> createConv1DLayer(kerasLayer.config!!, kerasLayer.config.name!!)
         LAYER_CONV2D -> createConv2DLayer(kerasLayer.config!!, kerasLayer.config.name!!)
@@ -150,6 +149,7 @@ private fun convertToLayer(
         LAYER_RESHAPE -> createReshapeLayer(kerasLayer.config!!, kerasLayer.config.name!!)
         LAYER_CROPPING_2D -> createCropping2DLayer(kerasLayer.config!!, kerasLayer.config.name!!)
         LAYER_ZERO_PADDING_2D -> createZeroPadding2DLayer(kerasLayer.config!!, kerasLayer.config.name!!)
+        LAYER_PERMUTE -> createPermuteLayer(kerasLayer.config!!, kerasLayer.config.name!!)
         // Merging layers
         LAYER_ADD -> createAddLayer(kerasLayer.config!!.name!!)
         LAYER_AVERAGE -> createAverageLayer(kerasLayer.config!!.name!!)
