@@ -743,7 +743,8 @@ private fun createKerasZeroPadding3DLayer(layer: ZeroPadding3D): KerasLayer {
     val configX = LayerConfig(
         dtype = DATATYPE_FLOAT32,
         name = layer.name,
-        padding = KerasPadding.ZeroPadding3D(layer.padding)
+        padding = KerasPadding.ZeroPadding3D(layer.padding),
+        trainable = layer.isTrainable
     )
     return KerasLayer(class_name = LAYER_ZERO_PADDING_3D, config = configX)
 }
