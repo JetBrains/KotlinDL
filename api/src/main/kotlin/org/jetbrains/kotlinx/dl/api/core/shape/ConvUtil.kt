@@ -6,9 +6,12 @@
 package org.jetbrains.kotlinx.dl.api.core.shape
 
 import org.jetbrains.kotlinx.dl.api.core.layer.convolutional.ConvPadding
+import org.tensorflow.Operand
+import org.tensorflow.op.Ops
+import kotlin.math.max
 
 /**
- * Calculates output length.
+ * Calculates output length after applying convolution operation on single axis.
  */
 internal fun convOutputLength(
     inputLength: Long,
@@ -25,3 +28,35 @@ internal fun convOutputLength(
     }
     return ((outputLength + stride - 1).toFloat() / stride).toLong()
 }
+
+/**
+ * Calculates output length after applying transposed convolution operation on single axis.
+ */
+internal fun convTransposeOutputLength(
+    inputLength: Long,
+    filterSize: Int,
+    padding: ConvPadding,
+    outputPadding: Int?,
+    stride: Int,
+    dilation: Int
+): Long {
+    val dilatedKernelSize = filterSize + (filterSize - 1) * (dilation - 1)
+    return  if (outputPadding == null) {
+        when (padding) {
+            ConvPadding.VALID -> inputLength * stride + max(dilatedKernelSize - stride, 0)
+            ConvPadding.FULL -> inputLength * stride - (stride + dilatedKernelSize - 2)
+            ConvPadding.SAME -> inputLength * stride
+        }
+    }
+    else {
+        val pad = when (padding) {
+            ConvPadding.SAME -> dilatedKernelSize / 2
+            ConvPadding.VALID -> 0
+            ConvPadding.FULL -> dilatedKernelSize - 1
+        }
+        (inputLength - 1) * stride + dilatedKernelSize - 2 * pad + outputPadding
+    }
+}
+
+internal fun convTransposeInputSizes(tf: Ops, outputShape: TensorShape): Operand<Int> =
+    tf.stack(outputShape.dims().map(Long::toInt).map(tf::constant))

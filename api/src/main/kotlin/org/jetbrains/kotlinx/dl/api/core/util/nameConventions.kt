@@ -25,6 +25,12 @@ internal fun convBiasVarName(name: String, dim: Int) = name + "_" + "conv${dim}d
 /** Default Conv kernel variable name in TensorFlow graph, based on variable's name. */
 internal fun convKernelVarName(name: String, dim: Int) = name + "_" + "conv${dim}d_kernel"
 
+/** Default ConvTranspose bias variable name in TensorFlow graph, based on variable's name. */
+internal fun convTransposeBiasVarName(name: String, dim: Int) = name + "_" + "conv${dim}d_transpose_bias"
+
+/** Default ConvTranspose kernel variable name in TensorFlow graph, based on variable's name. */
+internal fun convTransposeKernelVarName(name: String, dim: Int) = name + "_" + "conv${dim}d_transpose_kernel"
+
 /** Default DepthwiseConv2d bias variable name in TensorFlow graph, based on variable's name. */
 internal fun depthwiseConv2dBiasVarName(name: String) = name + "_" + "depthwise_conv2d_bias"
 

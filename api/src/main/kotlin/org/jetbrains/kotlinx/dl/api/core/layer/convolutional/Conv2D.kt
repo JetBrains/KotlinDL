@@ -99,7 +99,7 @@ public class Conv2D(
         return tf.nn.conv2d(input, kernel, stridesInternal.toMutableList(), paddingInternal.paddingName, options)
     }
 
-    protected override fun defineOutputShape(inputShape: Shape): Shape {
+    override fun defineOutputShape(inputShape: Shape): Shape {
         val batchSize = inputShape.size(0)
         val rowsCount = inputShape.size(1)
         val colsCount = inputShape.size(2)
@@ -123,10 +123,21 @@ public class Conv2D(
     }
 
     override fun toString(): String =
-        "Conv2D(filters=$filters, kernelSize=${kernelSize.contentToString()}, strides=${strides.contentToString()}, " +
-                "dilations=${dilations.contentToString()}, activation=$activation, kernelInitializer=$kernelInitializer, " +
-                "biasInitializer=$biasInitializer, kernelShape=$kernelShape, biasShape=$biasShape, padding=$padding, " +
-                "biasRegularizer=$biasRegularizer, kernelRegularizer=$kernelRegularizer, activityRegularizer=$activityRegularizer)"
+        "Conv2D(" +
+                "filters=$filters, " +
+                "kernelSize=${kernelSize.contentToString()}, " +
+                "strides=${strides.contentToString()}, " +
+                "dilations=${dilations.contentToString()}, " +
+                "activation=$activation, " +
+                "kernelInitializer=$kernelInitializer, " +
+                "biasInitializer=$biasInitializer, " +
+                "kernelShape=$kernelShape, " +
+                "biasShape=$biasShape, " +
+                "padding=$padding, " +
+                "biasRegularizer=$biasRegularizer, " +
+                "kernelRegularizer=$kernelRegularizer, " +
+                "activityRegularizer=$activityRegularizer" +
+                ")"
 
     override fun kernelVarName(name: String): String = convKernelVarName(name, dim = 2)
 

@@ -114,7 +114,7 @@ public class Conv1D(
         return tf.squeeze(result, squeezeAxis)
     }
 
-    protected override fun defineOutputShape(inputShape: Shape): Shape {
+    override fun defineOutputShape(inputShape: Shape): Shape {
         val batchSize = inputShape.size(0)
         val colsCount = inputShape.size(1)
 
@@ -130,8 +130,19 @@ public class Conv1D(
     }
 
     override fun toString(): String =
-        "Conv1D(filters=$filters, kernelSize=$kernelSize, strides=${strides.contentToString()}, " +
-                "dilation=${dilations.contentToString()}, activation=$activation, kernelInitializer=$kernelInitializer, " +
-                "biasInitializer=$biasInitializer, kernelShape=$kernelShape, biasShape=$biasShape, padding=$padding, " +
-                "biasRegularizer=$biasRegularizer, kernelRegularizer=$kernelRegularizer, activityRegularizer=$activityRegularizer)"
+        "Conv1D(" +
+                "filters=$filters, " +
+                "kernelSize=$kernelSize, " +
+                "strides=${strides.contentToString()}, " +
+                "dilation=${dilations.contentToString()}, " +
+                "activation=$activation, " +
+                "kernelInitializer=$kernelInitializer, " +
+                "biasInitializer=$biasInitializer, " +
+                "kernelShape=$kernelShape, " +
+                "biasShape=$biasShape, " +
+                "padding=$padding, " +
+                "biasRegularizer=$biasRegularizer, " +
+                "kernelRegularizer=$kernelRegularizer, " +
+                "activityRegularizer=$activityRegularizer" +
+                ")"
 }
