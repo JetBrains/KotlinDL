@@ -20,11 +20,7 @@ import org.jetbrains.kotlinx.dl.api.core.layer.merge.*
 import org.jetbrains.kotlinx.dl.api.core.layer.normalization.BatchNorm
 import org.jetbrains.kotlinx.dl.api.core.layer.pooling.*
 import org.jetbrains.kotlinx.dl.api.core.layer.regularization.Dropout
-import org.jetbrains.kotlinx.dl.api.core.layer.reshaping.Cropping2D
-import org.jetbrains.kotlinx.dl.api.core.layer.reshaping.Flatten
-import org.jetbrains.kotlinx.dl.api.core.layer.reshaping.RepeatVector
-import org.jetbrains.kotlinx.dl.api.core.layer.reshaping.Reshape
-import org.jetbrains.kotlinx.dl.api.core.layer.reshaping.ZeroPadding2D
+import org.jetbrains.kotlinx.dl.api.core.layer.reshaping.*
 import org.jetbrains.kotlinx.dl.api.core.regularizer.L1
 import org.jetbrains.kotlinx.dl.api.core.regularizer.L2
 import org.jetbrains.kotlinx.dl.api.core.regularizer.L2L1
@@ -146,7 +142,9 @@ private fun convertToLayer(
         LAYER_FLATTEN -> createFlattenLayer(kerasLayer.config!!.name!!)
         LAYER_REPEAT_VECTOR -> createRepeatVectorLayer(kerasLayer.config!!, kerasLayer.config.name!!)
         LAYER_RESHAPE -> createReshapeLayer(kerasLayer.config!!, kerasLayer.config.name!!)
+        LAYER_CROPPING_1D -> createCropping1DLayer(kerasLayer.config!!, kerasLayer.config.name!!)
         LAYER_CROPPING_2D -> createCropping2DLayer(kerasLayer.config!!, kerasLayer.config.name!!)
+        LAYER_CROPPING_3D -> createCropping3DLayer(kerasLayer.config!!, kerasLayer.config.name!!)
         LAYER_ZERO_PADDING_2D -> createZeroPadding2DLayer(kerasLayer.config!!, kerasLayer.config.name!!)
         // Merging layers
         LAYER_ADD -> createAddLayer(kerasLayer.config!!.name!!)
@@ -921,10 +919,26 @@ private fun createZeroPadding2DLayer(config: LayerConfig, name: String): Layer {
     )
 }
 
+private fun createCropping1DLayer(config: LayerConfig, name: String): Layer {
+    val cropping = config.cropping!!.map { it as Int }.toTypedArray().toIntArray()
+    return Cropping1D(
+        cropping = cropping,
+        name = name,
+    )
+}
+
 private fun createCropping2DLayer(config: LayerConfig, name: String): Layer {
-    val cropping = config.cropping!!.map { it.toIntArray() }.toTypedArray()
+    val cropping = config.cropping!!.map { (it as List<Int>).toIntArray() }.toTypedArray()
     return Cropping2D(
         cropping = cropping,
-        name = name
+        name = name,
+    )
+}
+
+private fun createCropping3DLayer(config: LayerConfig, name: String): Layer {
+    val cropping = config.cropping!!.map { (it as List<Int>).toIntArray() }.toTypedArray()
+    return Cropping3D(
+        cropping = cropping,
+        name = name,
     )
 }

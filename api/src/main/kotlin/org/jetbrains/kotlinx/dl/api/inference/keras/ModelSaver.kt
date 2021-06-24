@@ -20,9 +20,7 @@ import org.jetbrains.kotlinx.dl.api.core.layer.core.Input
 import org.jetbrains.kotlinx.dl.api.core.layer.merge.*
 import org.jetbrains.kotlinx.dl.api.core.layer.normalization.BatchNorm
 import org.jetbrains.kotlinx.dl.api.core.layer.pooling.*
-import org.jetbrains.kotlinx.dl.api.core.layer.reshaping.Flatten
-import org.jetbrains.kotlinx.dl.api.core.layer.reshaping.RepeatVector
-import org.jetbrains.kotlinx.dl.api.core.layer.reshaping.ZeroPadding2D
+import org.jetbrains.kotlinx.dl.api.core.layer.reshaping.*
 import org.jetbrains.kotlinx.dl.api.core.regularizer.L2L1
 import org.jetbrains.kotlinx.dl.api.core.regularizer.Regularizer
 import org.jetbrains.kotlinx.dl.api.inference.keras.config.*
@@ -102,6 +100,9 @@ private fun convertToKerasLayer(layer: Layer, isKerasFullyCompatible: Boolean, i
         is Flatten -> createKerasFlattenLayer(layer)
         is RepeatVector -> createKerasRepeatVectorLayer(layer)
         is ZeroPadding2D -> createKerasZeroPadding2DLayer(layer)
+        is Cropping1D -> createKerasCropping1DLayer(layer)
+        is Cropping2D -> createKerasCropping2DLayer(layer)
+        is Cropping3D -> createKerasCropping3DLayer(layer)
         // Merging layers
         is Add -> createKerasAddLayer(layer)
         is Maximum -> createKerasMaximumLayer(layer)
@@ -723,4 +724,34 @@ private fun createKerasZeroPadding2DLayer(layer: ZeroPadding2D): KerasLayer {
         trainable = layer.isTrainable
     )
     return KerasLayer(class_name = LAYER_ZERO_PADDING_2D, config = configX)
+}
+
+private fun createKerasCropping1DLayer(layer: Cropping1D): KerasLayer {
+    val configX = LayerConfig(
+        dtype = DATATYPE_FLOAT32,
+        cropping = layer.cropping.toList(),
+        name = layer.name,
+        trainable = layer.isTrainable,
+    )
+    return KerasLayer(class_name = LAYER_CROPPING_1D, config = configX)
+}
+
+private fun createKerasCropping2DLayer(layer: Cropping2D): KerasLayer {
+    val configX = LayerConfig(
+        dtype = DATATYPE_FLOAT32,
+        cropping = layer.cropping.toList().map { it.toList() },
+        name = layer.name,
+        trainable = layer.isTrainable,
+    )
+    return KerasLayer(class_name = LAYER_CROPPING_2D, config = configX)
+}
+
+private fun createKerasCropping3DLayer(layer: Cropping3D): KerasLayer {
+    val configX = LayerConfig(
+        dtype = DATATYPE_FLOAT32,
+        cropping = layer.cropping.toList().map { it.toList() },
+        name = layer.name,
+        trainable = layer.isTrainable,
+    )
+    return KerasLayer(class_name = LAYER_CROPPING_3D, config = configX)
 }

@@ -37,7 +37,7 @@ internal data class LayerConfig(
     @Json(serializeNull = false)
     val center: Boolean? = null,
     @Json(serializeNull = false)
-    val cropping: List<List<Int>>? = null,
+    val cropping: List<Any>? = null,
     @Json(serializeNull = false)
     val data_format: String? = null,
     @Json(serializeNull = false)
