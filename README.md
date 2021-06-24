@@ -152,7 +152,8 @@ To use KotlinDL in your project, add the following dependency to your `build.gra
 The latest KotlinDL version is 0.2.0. 
 The latest stable KotlinDL version is 0.2.0. 
 
-For more details, as well as for `pom.xml` and `build.gradle.kts` examples, please refer to the [Quick Start Guide](docs/quick_start_guide.md).
+For more details, as well as for `pom.xml` and `build.gradle.kts` examples, please refer to the
+[Quick Start Guide](https://nbviewer.jupyter.org/github/avan1235/KotlinDL/blob/notebooks/docs/quick_start_guide.ipynb).
 
 ## Working with KotlinDL in Jupyter Notebook
 You can work with KotlinDL interactively in Jupyter Notebook with the Kotlin kernel. To do so, add the following dependency in your notebook: 
@@ -161,18 +162,19 @@ You can work with KotlinDL interactively in Jupyter Notebook with the Kotlin ker
    @file:DependsOn("org.jetbrains.kotlinx:kotlin-deeplearning-api:[KOTLIN-DL-VERSION]")
 ```
 
-For more details on installing Jupyter Notebook and adding the Kotlin kernel, check out the [Quick Start Guide](docs/quick_start_guide.md).
+For more details on installing Jupyter Notebook and adding the Kotlin kernel, check out the
+[Quick Start Guide](https://nbviewer.jupyter.org/github/avan1235/KotlinDL/blob/notebooks/docs/quick_start_guide.ipynb).
 
 ## Examples and tutorials
 You do not need to have any prior deep learning experience to start using KotlinDL. 
 We are working on including extensive documentation to help you get started. 
 At this point, please feel free to check out the following tutorials we have prepared:
-- [Quick Start Guide](docs/quick_start_guide.md) 
-- [Creating your first neural network](docs/create_your_first_nn.md)
-- [Training a model](docs/training_a_model.md)
-- [Running inference with a trained model](docs/loading_trained_model_for_inference.md)
-- [Importing a Keras model](docs/importing_keras_model.md) 
-- [Transfer learning](docs/transfer_learning.md)
+- [Quick Start Guide](https://nbviewer.jupyter.org/github/avan1235/KotlinDL/blob/notebooks/docs/quick_start_guide.ipynb) 
+- [Creating your first neural network](https://nbviewer.jupyter.org/github/avan1235/KotlinDL/blob/notebooks/docs/create_your_first_nn.ipynb)
+- [Training a model](https://nbviewer.jupyter.org/github/avan1235/KotlinDL/blob/notebooks/docs/training_a_model.ipynb)
+- [Running inference with a trained model](https://nbviewer.jupyter.org/github/avan1235/KotlinDL/blob/notebooks/docs/loading_trained_model_for_inference.ipynb)
+- [Importing a Keras model](https://nbviewer.jupyter.org/github/avan1235/KotlinDL/blob/notebooks/docs/importing_keras_model.ipynb) 
+- [Transfer learning](https://nbviewer.jupyter.org/github/avan1235/KotlinDL/blob/notebooks/docs/transfer_learning.ipynb)
 
 For more inspiration, take a look at the [code examples](examples) in this repo.
 

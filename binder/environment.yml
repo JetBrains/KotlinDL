@@ -1,0 +1,12 @@
+name: kotlin-jupyter-demo
+dependencies:
+  - kotlin-jupyter-kernel>=0.10.0.40
+  - pip
+  - python=3.7
+  - pip:
+      - tensorflow==1.15.0
+      - keras==2.3.1
+channels:
+  - jetbrains
+  - conda-forge
+  - defaults
