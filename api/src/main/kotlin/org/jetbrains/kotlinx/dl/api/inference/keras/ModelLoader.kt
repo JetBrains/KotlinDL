@@ -16,6 +16,7 @@ import org.jetbrains.kotlinx.dl.api.core.layer.convolutional.*
 import org.jetbrains.kotlinx.dl.api.core.layer.core.ActivationLayer
 import org.jetbrains.kotlinx.dl.api.core.layer.core.Dense
 import org.jetbrains.kotlinx.dl.api.core.layer.core.Input
+import org.jetbrains.kotlinx.dl.api.core.layer.reshaping.Permute
 import org.jetbrains.kotlinx.dl.api.core.layer.merge.*
 import org.jetbrains.kotlinx.dl.api.core.layer.normalization.BatchNorm
 import org.jetbrains.kotlinx.dl.api.core.layer.pooling.*
@@ -148,6 +149,7 @@ private fun convertToLayer(
         LAYER_RESHAPE -> createReshapeLayer(kerasLayer.config!!, kerasLayer.config.name!!)
         LAYER_CROPPING_2D -> createCropping2DLayer(kerasLayer.config!!, kerasLayer.config.name!!)
         LAYER_ZERO_PADDING_2D -> createZeroPadding2DLayer(kerasLayer.config!!, kerasLayer.config.name!!)
+        LAYER_PERMUTE -> createPermuteLayer(kerasLayer.config!!, kerasLayer.config.name!!)
         // Merging layers
         LAYER_ADD -> createAddLayer(kerasLayer.config!!.name!!)
         LAYER_AVERAGE -> createAverageLayer(kerasLayer.config!!.name!!)
@@ -604,6 +606,13 @@ private fun createDenseLayer(config: LayerConfig, name: String): Layer {
         kernelRegularizer = convertToRegularizer(config.kernel_regularizer),
         biasRegularizer = convertToRegularizer(config.bias_regularizer),
         activityRegularizer = convertToRegularizer(config.activity_regularizer),
+        name = name
+    )
+}
+
+private fun createPermuteLayer(config: LayerConfig,name: String): Layer {
+    return Permute(
+        dims = config.dims!!,
         name = name
     )
 }
