@@ -20,11 +20,7 @@ import org.jetbrains.kotlinx.dl.api.core.layer.merge.*
 import org.jetbrains.kotlinx.dl.api.core.layer.normalization.BatchNorm
 import org.jetbrains.kotlinx.dl.api.core.layer.pooling.*
 import org.jetbrains.kotlinx.dl.api.core.layer.regularization.Dropout
-import org.jetbrains.kotlinx.dl.api.core.layer.reshaping.Cropping2D
-import org.jetbrains.kotlinx.dl.api.core.layer.reshaping.Flatten
-import org.jetbrains.kotlinx.dl.api.core.layer.reshaping.RepeatVector
-import org.jetbrains.kotlinx.dl.api.core.layer.reshaping.Reshape
-import org.jetbrains.kotlinx.dl.api.core.layer.reshaping.ZeroPadding2D
+import org.jetbrains.kotlinx.dl.api.core.layer.reshaping.*
 import org.jetbrains.kotlinx.dl.api.core.regularizer.L1
 import org.jetbrains.kotlinx.dl.api.core.regularizer.L2
 import org.jetbrains.kotlinx.dl.api.core.regularizer.L2L1
@@ -148,6 +144,9 @@ private fun convertToLayer(
         LAYER_RESHAPE -> createReshapeLayer(kerasLayer.config!!, kerasLayer.config.name!!)
         LAYER_CROPPING_2D -> createCropping2DLayer(kerasLayer.config!!, kerasLayer.config.name!!)
         LAYER_ZERO_PADDING_2D -> createZeroPadding2DLayer(kerasLayer.config!!, kerasLayer.config.name!!)
+        LAYER_UP_SAMPLING_1D -> createUpSampling1DLayer(kerasLayer.config!!, kerasLayer.config.name!!)
+        LAYER_UP_SAMPLING_2D -> createUpSampling2DLayer(kerasLayer.config!!, kerasLayer.config.name!!)
+        LAYER_UP_SAMPLING_3D -> createUpSampling3DLayer(kerasLayer.config!!, kerasLayer.config.name!!)
         // Merging layers
         LAYER_ADD -> createAddLayer(kerasLayer.config!!.name!!)
         LAYER_AVERAGE -> createAverageLayer(kerasLayer.config!!.name!!)
@@ -427,6 +426,15 @@ private fun convertToActivation(activation: String): Activations {
         ACTIVATION_HARD_SIGMOID -> Activations.HardSigmoid
         ACTIVATION_SWISH -> Activations.Swish
         else -> throw IllegalStateException("$activation is not supported yet!")
+    }
+}
+
+private fun convertToInterpolationMethod(interpolation: String): InterpolationMethod {
+    return when (interpolation) {
+        InterpolationMethod.NEAREST.methodName -> InterpolationMethod.NEAREST
+        InterpolationMethod.BILINEAR.methodName -> InterpolationMethod.BILINEAR
+        InterpolationMethod.BICUBIC.methodName -> InterpolationMethod.BICUBIC
+        else -> throw IllegalArgumentException("Interpolation $interpolation is not supported yet!")
     }
 }
 
@@ -926,5 +934,27 @@ private fun createCropping2DLayer(config: LayerConfig, name: String): Layer {
     return Cropping2D(
         cropping = cropping,
         name = name
+    )
+}
+
+private fun createUpSampling1DLayer(config: LayerConfig, name: String): Layer {
+    return UpSampling1D(
+        size = config.size!! as Int,
+        name = name,
+    )
+}
+
+private fun createUpSampling2DLayer(config: LayerConfig, name: String): Layer {
+    return UpSampling2D(
+        size = (config.size!! as List<Int>).toIntArray(),
+        interpolation = convertToInterpolationMethod(config.interpolation!!),
+        name = name,
+    )
+}
+
+private fun createUpSampling3DLayer(config: LayerConfig, name: String): Layer {
+    return UpSampling3D(
+        size = (config.size!! as List<Int>).toIntArray(),
+        name = name,
     )
 }
