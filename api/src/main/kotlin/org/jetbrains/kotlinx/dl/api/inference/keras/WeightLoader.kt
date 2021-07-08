@@ -281,7 +281,7 @@ private fun fillSeparableConv2DVariablesFromKeras(
         val data = it.data
         when (it.name) {
             "depthwise_kernel:0" -> {
-                val kernelVariableName = separableConv2dDepthwiseKernelVarName(layerName)
+                val kernelVariableName = separableConvDepthwiseKernelVarName(layerName, dim = 2)
                 val kernelShape = (model.getLayer(layerName) as SeparableConv2D).depthwiseShapeArray
                 require(
                     kernelShape.map { e -> e.toInt() }.toIntArray().contentEquals(dims)
@@ -289,7 +289,7 @@ private fun fillSeparableConv2DVariablesFromKeras(
                 model.fillVariable(kernelVariableName, data)
             }
             "pointwise_kernel:0" -> {
-                val kernelVariableName = separableConv2dPointwiseKernelVarName(layerName)
+                val kernelVariableName = separableConvPointwiseKernelVarName(layerName, dim = 2)
                 val kernelShape = (model.getLayer(layerName) as SeparableConv2D).pointwiseShapeArray
                 require(
                     kernelShape.map { e -> e.toInt() }.toIntArray().contentEquals(dims)
@@ -297,7 +297,7 @@ private fun fillSeparableConv2DVariablesFromKeras(
                 model.fillVariable(kernelVariableName, data)
             }
             "depthwise_bias:0" -> {
-                val biasVariableName = separableConv2dBiasVarName(layerName)
+                val biasVariableName = separableConvBiasVarName(layerName, dim = 2)
                 val biasShape = (model.getLayer(layerName) as SeparableConv2D).biasShapeArray
                 require(
                     biasShape.map { e -> e.toInt() }.toIntArray().contentEquals(dims)
@@ -590,9 +590,9 @@ private fun initDepthwiseConv2DVariablesByDefaultInitializer(name: String, model
 }
 
 private fun initSeparableConv2DVariablesByDefaultInitializer(name: String, model: GraphTrainableModel) {
-    val depthwiseKernelVariableName = separableConv2dDepthwiseKernelVarName(name)
-    val pointwiseKernelVariableName = separableConv2dPointwiseKernelVarName(name)
-    val biasVariableName = depthwiseConv2dBiasVarName(name)
+    val depthwiseKernelVariableName = separableConvDepthwiseKernelVarName(name, dim = 2)
+    val pointwiseKernelVariableName = separableConvPointwiseKernelVarName(name, dim = 2)
+    val biasVariableName = separableConvBiasVarName(name, dim = 2)
     model.runAssignOpByVarName(depthwiseKernelVariableName)
     model.runAssignOpByVarName(pointwiseKernelVariableName)
     model.runAssignOpByVarName(biasVariableName)
@@ -786,11 +786,11 @@ private fun fillSeparableConv2DVariables(
 
     layerPaths as LayerConvOrDensePaths
     val depthwiseKernelData = hdfFile.getDatasetByPath(depthwiseKernelDataPathTemplate.format(name, name)).data
-    val depthwiseKernelVariableName = separableConv2dDepthwiseKernelVarName(name)
+    val depthwiseKernelVariableName = separableConvDepthwiseKernelVarName(name, dim = 2)
     model.fillVariable(depthwiseKernelVariableName, depthwiseKernelData)
 
     val pointwiseKernelData = hdfFile.getDatasetByPath(pointwiseKernelDataPathTemplate.format(name, name)).data
-    val pointwiseKernelVariableName = separableConv2dPointwiseKernelVarName(name)
+    val pointwiseKernelVariableName = separableConvPointwiseKernelVarName(name, dim = 2)
     model.fillVariable(pointwiseKernelVariableName, pointwiseKernelData)
 
     if (useBias) {
