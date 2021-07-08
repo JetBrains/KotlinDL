@@ -15,7 +15,6 @@ import org.tensorflow.Operand
 import org.tensorflow.Shape
 import org.tensorflow.op.Ops
 import org.tensorflow.op.core.Variable
-import java.lang.IllegalArgumentException
 
 /**
  * Base abstract class for all layers.
@@ -28,6 +27,11 @@ public abstract class Layer(public var name: String) {
      * If false, layer's weights are frozen and could be changed during the training.
      */
     public var isTrainable: Boolean = true
+        set(value) {
+            if (value && this is NoGradients)
+                throw IllegalStateException("${javaClass.name} can not set `isTrainable` to `true`.")
+            field = value
+        }
 
     /** Output data tensor shape. */
     public lateinit var outputShape: TensorShape
